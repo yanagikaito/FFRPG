@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Vector2Int currentCell = Grid.GetCell2D(this.gameObject);
-        transform.position = Grid.GetCellCenter2D(currentCell);
+        transform.position = Grid.GetCellCenterWorld((Vector3Int)currentCell);
     }
 
     // Update is called once per frame
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
             Vector2Int currentCell = Grid.GetCell2D(this.gameObject);
 
             // Vector3IntとVector2Intは異なる型であり、直接加算することはできない
-            transform.position = Grid.GetCellCenter2D(currentCell + Direction.Left);
+            transform.position = Grid.GetCellCenterWorld((Vector3Int)(currentCell + Direction.Left));
         }
         //// セルの中心をベクトル3として返す
         //Grid.GetCellCenterWorld();
