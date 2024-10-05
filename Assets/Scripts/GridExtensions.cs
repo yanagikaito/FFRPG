@@ -21,4 +21,10 @@ public static class GridExtensions
         Vector3 cellCenterWorld = grid.GetCellCenterWorld(threeDimensionCell);
         return Vector2Int.RoundToInt((Vector2)cellCenterWorld);
     }
+
+    public static Vector2 GetCellCenter2D(this Grid grid, Vector2Int cellPosition)
+    {
+        // セルの中心を計算するロジックをここに記述
+        return new Vector2(cellPosition.x + 0.5f, cellPosition.y + 0.5f);
+    }
 }
