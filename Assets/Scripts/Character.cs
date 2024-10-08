@@ -6,17 +6,17 @@ public abstract class Character : MonoBehaviour
 {
     public CharacterMover Move { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Move = new CharacterMover(this);
     }
 
-    void Start()
+    protected virtual void Start()
     {
 
     }
 
-    void Update()
+    protected virtual void Update()
     {
 
     }
