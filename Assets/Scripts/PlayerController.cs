@@ -5,17 +5,24 @@ using UnityEngine;
 public class PlayerController : Character
 {
 
-    void Start()
+    public InputHandler InputHandler { get; private set; }
+
+    protected override void Awake()
     {
+        base.Awake();
+        InputHandler = new InputHandler(this);
+    }
+
+    protected override void Start()
+    {
+        base.Start();
         Vector2Int currentCell = Map.Grid.GetCell2D(this.gameObject);
         transform.position = Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
     }
 
-    void Update()
+    protected override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Move.Move(Direction.Left);
-        }
+        base.Update();
+        InputHandler.CheckInput();
     }
 }
