@@ -6,6 +6,10 @@ public abstract class Character : MonoBehaviour
 {
     public CharacterMover Move { get; private set; }
 
+    // 式形式プロパティ
+    // IsMoving プロパティの値を返す
+    public bool IsMoving => Move.IsMoving;
+
     protected virtual void Awake()
     {
         Move = new CharacterMover(this);

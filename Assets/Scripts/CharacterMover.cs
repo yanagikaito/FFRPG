@@ -8,6 +8,9 @@ public class CharacterMover
     private const float TIME_TO_MOVE_ONE_SQUARE = .375f;
     private Transform transform;
 
+    // プロパティの移動
+    public bool IsMoving { get; private set; }
+
     // コンストラクタ
     public CharacterMover(Character character)
     {
@@ -17,7 +20,7 @@ public class CharacterMover
 
     public void Move(Vector2Int direction)
     {
-        if (direction.IsBasic())
+        if (direction.IsBasic() || IsMoving == false)
         {
             character.StartCoroutine(Co_Move(direction));
         }
@@ -25,6 +28,8 @@ public class CharacterMover
 
     public IEnumerator Co_Move(Vector2Int direction)
     {
+        IsMoving = true;
+
         // 現在いるセルを取得
         Vector2Int startingCell = Map.Grid.GetCell2D(character.gameObject);
 
@@ -51,5 +56,6 @@ public class CharacterMover
         }
 
         transform.position = endingPosition;
+        IsMoving = false;
     }
 }
