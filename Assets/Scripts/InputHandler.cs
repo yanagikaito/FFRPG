@@ -12,21 +12,26 @@ public class InputHandler
 
     public void CheckInput()
     {
+        // プレイヤーが移動している間は入力が処理されないようにする
+        if (playerController.IsMoving)
+            return;
+
         KeyCode keyPressed = KeyCode.Escape;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        // キーを取得
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             keyPressed = KeyCode.LeftArrow;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
             keyPressed = KeyCode.RightArrow;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKey(KeyCode.UpArrow))
         {
             keyPressed = KeyCode.UpArrow;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
             keyPressed = KeyCode.DownArrow;
         }
