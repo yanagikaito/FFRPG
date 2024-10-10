@@ -5,6 +5,17 @@ using UnityEngine;
 public class InputHandler
 {
     private PlayerController playerController;
+
+    private Command command;
+
+    private enum Command
+    {
+        None,
+        MoveLeft,
+        MoveRight,
+        MoveUp,
+        MoveDown,
+    }
     public InputHandler(PlayerController playerController)
     {
         this.playerController = playerController;
@@ -12,65 +23,61 @@ public class InputHandler
 
     public void CheckInput()
     {
-        // プレイヤーが移動している間は入力が処理されないようにする
-        if (playerController.IsMoving)
-            return;
-
-        KeyCode keyPressed = KeyCode.Escape;
+        command = Command.None;
 
         // キーを取得
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            keyPressed = KeyCode.LeftArrow;
+            command = Command.MoveLeft;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            keyPressed = KeyCode.RightArrow;
+            command = Command.MoveRight;
         }
         else if (Input.GetKey(KeyCode.UpArrow))
         {
-            keyPressed = KeyCode.UpArrow;
+            command = Command.MoveUp;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
-            keyPressed = KeyCode.DownArrow;
+            command = Command.MoveDown;
         }
 
-        if (keyPressed != KeyCode.Escape)
+        if (command != Command.None)
         {
-            HandleInput(keyPressed);
+            HandleCommand(command);
         }
     }
 
-    private void HandleInput(KeyCode keyPressed)
+    private void HandleCommand(Command command)
     {
-        switch (keyPressed)
+        switch (command)
         {
-            case (KeyCode.LeftArrow):
-            case (KeyCode.RightArrow):
-            case (KeyCode.UpArrow):
-            case (KeyCode.DownArrow):
-                ProcessMovementInput(keyPressed);
+            case (Command.MoveLeft):
+            case (Command.MoveRight):
+            case (Command.MoveUp):
+            case (Command.MoveDown):
+                ProcessMovement(command);
                 break;
         }
     }
 
-    private void ProcessMovementInput(KeyCode keyPressed)
+    private void ProcessMovement(Command command)
     {
         Vector2Int direction = new Vector2Int(0, 0);
 
-        switch (keyPressed)
+        switch (command)
         {
-            case (KeyCode.LeftArrow):
+            case (Command.MoveLeft):
                 direction = Direction.Left;
                 break;
-            case (KeyCode.RightArrow):
+            case (Command.MoveRight):
                 direction = Direction.Right;
                 break;
-            case (KeyCode.UpArrow):
+            case (Command.MoveUp):
                 direction = Direction.Up;
                 break;
-            case (KeyCode.DownArrow):
+            case (Command.MoveDown):
                 direction = Direction.Down;
                 break;
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : Character
 {
 
-    public InputHandler InputHandler { get; private set; }
+    private InputHandler InputHandler;
 
     protected override void Awake()
     {
@@ -16,8 +16,6 @@ public class PlayerController : Character
     protected override void Start()
     {
         base.Start();
-        Vector2Int currentCell = Map.Grid.GetCell2D(this.gameObject);
-        transform.position = Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
     }
 
     protected override void Update()

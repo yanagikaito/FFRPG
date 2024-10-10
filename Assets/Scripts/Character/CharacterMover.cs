@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterMover
 {
-    public Character character;
+    private Character character;
     private const float TIME_TO_MOVE_ONE_SQUARE = .375f;
     private Transform transform;
 
@@ -20,13 +20,13 @@ public class CharacterMover
 
     public void Move(Vector2Int direction)
     {
-        if (direction.IsBasic() || IsMoving == false)
+        if (direction.IsBasic() && IsMoving == false)
         {
             character.StartCoroutine(Co_Move(direction));
         }
     }
 
-    public IEnumerator Co_Move(Vector2Int direction)
+    private IEnumerator Co_Move(Vector2Int direction)
     {
         IsMoving = true;
 

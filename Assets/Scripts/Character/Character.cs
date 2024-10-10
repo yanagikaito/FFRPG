@@ -17,7 +17,8 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Start()
     {
-
+        Vector2Int currentCell = Map.Grid.GetCell2D(this.gameObject);
+        transform.position = Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
     }
 
     protected virtual void Update()
