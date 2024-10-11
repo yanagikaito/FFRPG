@@ -1,61 +1,58 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMover
 {
-    private Character character;
-    private const float TIME_TO_MOVE_ONE_SQUARE = .375f;
-    private Transform transform;
+    private readonly Character character;
+    private readonly Transform transform;
+    private const float TimeToMoveOneSquare = 0.375f;
 
-    // プロパティの移動
+    // キャラクターが移動中かどうかを示すプロパティ
     public bool IsMoving { get; private set; }
 
-    // コンストラクタ
     public CharacterMover(Character character)
     {
         this.character = character;
-        this.transform = character.transform;
+        transform = character.transform;
     }
 
+    // 方向が基本的な方向（上、下、左、右）であり、かつキャラクターが移動中でない場合
+    // 移動コルーチンを開始
     public void Move(Vector2Int direction)
     {
-        if (direction.IsBasic() && IsMoving == false)
+        if (direction.IsBasic() && !IsMoving)
         {
-            character.StartCoroutine(Co_Move(direction));
+            character.StartCoroutine(CoMove(direction));
         }
     }
 
-    private IEnumerator Co_Move(Vector2Int direction)
+    // IsMovingをtrueに設定し、開始位置と終了位置を取得
+    // whileループ内でキャラクターの位置を補間し、終了位置に到達するまで移動
+    // 移動が完了したらIsMovingをfalseに設定
+    private IEnumerator CoMove(Vector2Int direction)
     {
         IsMoving = true;
 
-        // 現在いるセルを取得
-        Vector2Int startingCell = Map.Grid.GetCell2D(character.gameObject);
+        Vector2 startingPosition = GetCellCenter2D(character.gameObject);
+        Vector2 endingPosition = GetCellCenter2D(character.gameObject) + direction;
 
-        // 最後のセル
-        Vector2Int endingCell = startingCell + direction;
+        float elapsedTime = 0f;
 
-        // 開始位置を取得
-        // 開始セルでセルの中心2dを取得
-        Vector2 startingPosition = Map.Grid.GetCellCenter2D(startingCell);
-
-        // 終了位置を取得
-        Vector2 endingPosition = Map.Grid.GetCellCenter2D(endingCell);
-
-        float elapsedTime = 0;
-
-        // whileループに入れる
         while ((Vector2)transform.position != endingPosition)
         {
-            // 2つのポイントの間をワープする
-            character.transform.position = Vector2.Lerp((Vector2)startingPosition,
-                (Vector2)endingPosition, elapsedTime / TIME_TO_MOVE_ONE_SQUARE);
+            transform.position = Vector2.Lerp(startingPosition, endingPosition, elapsedTime / TimeToMoveOneSquare);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         transform.position = endingPosition;
         IsMoving = false;
+    }
+
+    // オブジェクトの現在のセルの中心を取得
+    private Vector2 GetCellCenter2D(GameObject gameObject)
+    {
+        var cellPosition = Map.Grid.GetCell2D(gameObject);
+        return Map.Grid.GetCellCenter2D(cellPosition);
     }
 }
