@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputHandler
 {
-    private PlayerController playerController;
-
+    private readonly PlayerController playerController;
     private Command command;
 
     private enum Command
@@ -16,6 +13,7 @@ public class InputHandler
         MoveUp,
         MoveDown,
     }
+
     public InputHandler(PlayerController playerController)
     {
         this.playerController = playerController;
@@ -24,63 +22,38 @@ public class InputHandler
     public void CheckInput()
     {
         command = Command.None;
+        if (Input.GetKey(KeyCode.LeftArrow)) command = Command.MoveLeft;
+        else if (Input.GetKey(KeyCode.RightArrow)) command = Command.MoveRight;
+        else if (Input.GetKey(KeyCode.UpArrow)) command = Command.MoveUp;
+        else if (Input.GetKey(KeyCode.DownArrow)) command = Command.MoveDown;
 
-        // ƒL[‚ðŽæ“¾
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            command = Command.MoveLeft;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            command = Command.MoveRight;
-        }
-        else if (Input.GetKey(KeyCode.UpArrow))
-        {
-            command = Command.MoveUp;
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            command = Command.MoveDown;
-        }
-
-        if (command != Command.None)
-        {
-            HandleCommand(command);
-        }
+        if (command != Command.None) HandleCommand(command);
     }
 
     private void HandleCommand(Command command)
     {
-        switch (command)
+        if (IsMovementCommand(command))
         {
-            case (Command.MoveLeft):
-            case (Command.MoveRight):
-            case (Command.MoveUp):
-            case (Command.MoveDown):
-                ProcessMovement(command);
-                break;
+            ProcessMovement(command);
         }
+    }
+
+    private bool IsMovementCommand(Command command)
+    {
+        return command == Command.MoveLeft || command == Command.MoveRight ||
+               command == Command.MoveUp || command == Command.MoveDown;
     }
 
     private void ProcessMovement(Command command)
     {
-        Vector2Int direction = new Vector2Int(0, 0);
-
-        switch (command)
+        Vector2Int direction = command switch
         {
-            case (Command.MoveLeft):
-                direction = Direction.Left;
-                break;
-            case (Command.MoveRight):
-                direction = Direction.Right;
-                break;
-            case (Command.MoveUp):
-                direction = Direction.Up;
-                break;
-            case (Command.MoveDown):
-                direction = Direction.Down;
-                break;
-        }
+            Command.MoveLeft => Direction.Left,
+            Command.MoveRight => Direction.Right,
+            Command.MoveUp => Direction.Up,
+            Command.MoveDown => Direction.Down,
+            _ => Vector2Int.zero
+        };
 
         playerController.Move.Move(direction);
     }
