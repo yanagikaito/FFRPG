@@ -3,6 +3,7 @@ using UnityEngine;
 public class InputHandler
 {
     private readonly PlayerController playerController;
+
     private Command command;
 
     private enum Command
