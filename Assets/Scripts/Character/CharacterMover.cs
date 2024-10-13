@@ -33,6 +33,8 @@ public class CharacterMover
     {
         IsMoving = true;
 
+        character.Turn.Turn(direction);
+
         Vector2 startingPosition = GetCellCenter2D(character.gameObject);
         Vector2 endingPosition = GetCellCenter2D(character.gameObject) + direction;
 
