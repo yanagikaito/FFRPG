@@ -6,7 +6,6 @@ public class PlayerController : Character
 {
 
     private InputHandler InputHandler;
-
     protected override void Awake()
     {
         base.Awake();

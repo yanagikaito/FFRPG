@@ -25,6 +25,6 @@ public class CharacterAnimator
     public void UpdateParameters()
     {
         animator.SetFloat(horizontalParameter, character.Facing.x);
-        animator.SetFloat(horizontalParameter, character.Facing.y);
+        animator.SetFloat(verticalParameter, character.Facing.y);
     }
 }
