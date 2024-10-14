@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
+
 public abstract class Character : MonoBehaviour
 {
     public CharacterMover Move { get; private set; }
@@ -27,6 +30,7 @@ public abstract class Character : MonoBehaviour
     {
         Vector2Int currentCell = Map.Grid.GetCell2D(this.gameObject);
         transform.position = Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
+        Map.OccupiedCells.Add(currentCell);
     }
 
     protected virtual void Update()
