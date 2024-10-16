@@ -22,6 +22,9 @@ public class CharacterMover
     // 方向が基本的な方向（上、下、左、右）であり、かつキャラクターが移動中でない場合、移動コルーチンを開始
     public void Move(Vector2Int direction)
     {
+        // キャラクターの向きを指定された方向に変更する
+        character.Turn.Turn(direction);
+
         if (direction.IsBasic() && !IsMoving && !Map.OccupiedCells.Contains(CurrentCell + direction))
         {
             character.StartCoroutine(CoMove(direction));
@@ -35,9 +38,6 @@ public class CharacterMover
     {
         // 移動中フラグを立てる
         IsMoving = true;
-
-        // キャラクターの向きを指定された方向に変更する
-        character.Turn.Turn(direction);
 
         // 現在のセルの中心を取得
         Vector2 startingPosition = GetCellCenter2D(character.gameObject);
