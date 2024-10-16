@@ -4,5 +4,13 @@ using UnityEngine;
 
 public class StationaryNPC : Character
 {
+    protected override void Update()
+    {
+        base.Update();
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Move.Move(Direction.Left);
+        }
+    }
 }
