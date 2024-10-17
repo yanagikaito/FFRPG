@@ -11,7 +11,7 @@ public class CharacterMover
     private Vector2Int CurrentCell => Map.Grid.GetCell2D(character.gameObject);
 
     // キャラクターが移動中かどうかを示すプロパティ
-    public bool IsMoving { get; private set; }
+    public bool IsMoving { get; private set; } = false;
 
     public CharacterMover(Character character)
     {
@@ -20,15 +20,23 @@ public class CharacterMover
     }
 
     // 方向が基本的な方向（上、下、左、右）であり、かつキャラクターが移動中でない場合、移動コルーチンを開始
-    public void Move(Vector2Int direction)
+    public void TryMove(Vector2Int direction)
     {
+        if (IsMoving) return;
+
         // キャラクターの向きを指定された方向に変更する
         character.Turn.Turn(direction);
+        Vector2Int targetCell = CurrentCell + direction;
 
-        if (direction.IsBasic() && !IsMoving && !Map.OccupiedCells.Contains(CurrentCell + direction))
+        if (direction.IsBasic() && IsCellEmpty(targetCell))
         {
             character.StartCoroutine(CoMove(direction));
         }
+    }
+
+    private bool IsCellEmpty(Vector2Int cell)
+    {
+        return !(Map.OccupiedCells.Contains(cell));
     }
 
     // IsMovingをtrueに設定し、開始位置と終了位置を取得
