@@ -56,6 +56,6 @@ public class InputHandler
             _ => Vector2Int.zero
         };
 
-        playerController.Move.Move(direction);
+        playerController.Move.TryMove(direction);
     }
 }

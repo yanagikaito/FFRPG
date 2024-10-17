@@ -10,7 +10,7 @@ public class StationaryNPC : Character
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Move.Move(Direction.Left);
+            Move.TryMove(Direction.Left);
         }
     }
 }
