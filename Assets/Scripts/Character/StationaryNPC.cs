@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationaryNPC : Character
+// StationaryNPCクラス：Characterクラスを継承し、Interactableインターフェースを実装
+public class StationaryNPC : Character, Interactable
 {
-    protected override void Update()
-    {
-        base.Update();
+    // interactionフィールドをSerializeField属性で公開
+    [SerializeField] private Interaction interaction;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Move.TryMove(Direction.Left);
-        }
+    // interactionプロパティ：interactionフィールドを公開
+    public Interaction Interaction => interaction;
+
+    // Interactメソッド：InteractionのStartInteractionメソッドを呼び出す
+    public void Interact()
+    {
+        Interaction.StartInteraction();
     }
 }

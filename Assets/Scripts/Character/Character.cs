@@ -30,7 +30,7 @@ public abstract class Character : MonoBehaviour
     {
         Vector2Int currentCell = Map.Grid.GetCell2D(this.gameObject);
         transform.position = Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
-        Map.OccupiedCells.Add(currentCell);
+        Map.OccupiedCells.Add(currentCell, this);
     }
 
     protected virtual void Update()
