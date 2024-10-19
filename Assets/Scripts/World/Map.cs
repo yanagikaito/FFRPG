@@ -11,7 +11,7 @@ public class Map : MonoBehaviour
     public static Grid Grid { get; private set; }
 
     // 占有されているセルのリストを保持する静的プロパティ
-    public static List<Vector2Int> OccupiedCells { get; private set; } = new List<Vector2Int>();
+    public static Dictionary<Vector2Int, MonoBehaviour> OccupiedCells { get; private set; } = new Dictionary<Vector2Int, MonoBehaviour>();
 
     // Awakeメソッドはオブジェクトの初期化時に呼び出される
     private void Awake()

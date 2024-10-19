@@ -36,7 +36,7 @@ public class CharacterMover
 
     private bool IsCellEmpty(Vector2Int cell)
     {
-        return !(Map.OccupiedCells.Contains(cell));
+        return !(Map.OccupiedCells.ContainsKey(cell));
     }
 
     // IsMovingをtrueに設定し、開始位置と終了位置を取得
@@ -54,7 +54,7 @@ public class CharacterMover
         Vector2 endingPosition = GetCellCenter2D(character.gameObject) + direction;
 
         // 移動先のセルを占有リストに追加
-        Map.OccupiedCells.Add(CurrentCell + direction);
+        Map.OccupiedCells.Add(CurrentCell + direction, character);
 
         // 現在のセルを占有リストから削除
         Map.OccupiedCells.Remove(CurrentCell);
