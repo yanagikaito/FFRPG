@@ -9,11 +9,9 @@ public class DirectionTests
     [Test]
     public void Basic_directions_are_correct()
     {
-        // Arrange
-
-        // Act
 
         // Assert
+
         Assert.AreEqual(new Vector2Int(0, 1), Direction.Up);
         Assert.AreEqual(new Vector2Int(0, -1), Direction.Down);
         Assert.AreEqual(new Vector2Int(-1, 0), Direction.Left);
@@ -29,8 +27,6 @@ public class DirectionTests
         Vector2Int testVector2 = new Vector2Int(1, 0);
         Vector2Int testVector3 = Direction.Down;
         Vector2Int testVector4 = new Vector2Int(0, 0);
-
-        // Act
 
         // Assert
 
