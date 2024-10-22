@@ -22,21 +22,46 @@ public class CharacterMover
     // 方向が基本的な方向（上、下、左、右）であり、かつキャラクターが移動中でない場合、移動コルーチンを開始
     public void TryMove(Vector2Int direction)
     {
-        if (IsMoving) return;
+        if (IsMoving || !direction.IsBasic()) return;
 
         // キャラクターの向きを指定された方向に変更する
         character.Turn.Turn(direction);
         Vector2Int targetCell = CurrentCell + direction;
 
-        if (direction.IsBasic() && IsCellEmpty(targetCell))
+        if (CanMoveIntoCell(targetCell, direction))
         {
+            // 移動先のセルを占有リストに追加
+            Map.OccupiedCells.Add(CurrentCell + direction, character);
+
+            // 現在のセルを占有リストから削除
+            Map.OccupiedCells.Remove(CurrentCell);
+
             character.StartCoroutine(CoMove(direction));
         }
     }
 
-    private bool IsCellEmpty(Vector2Int cell)
+    private bool CanMoveIntoCell(Vector2Int targetCell, Vector2Int direction)
     {
-        return !(Map.OccupiedCells.ContainsKey(cell));
+        if (IsCellOccupied(targetCell))
+        {
+            return false;
+        }
+        Ray2D ray = new Ray2D(CurrentCell.Center2D(), direction);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 2.0f);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.distance < Map.Grid.cellSize.x)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool IsCellOccupied(Vector2Int cell)
+    {
+        return Map.OccupiedCells.ContainsKey(cell);
     }
 
     // IsMovingをtrueに設定し、開始位置と終了位置を取得
@@ -52,12 +77,6 @@ public class CharacterMover
 
         // 移動先のセルの中心を計算
         Vector2 endingPosition = GetCellCenter2D(character.gameObject) + direction;
-
-        // 移動先のセルを占有リストに追加
-        Map.OccupiedCells.Add(CurrentCell + direction, character);
-
-        // 現在のセルを占有リストから削除
-        Map.OccupiedCells.Remove(CurrentCell);
 
         // 経過時間を初期化
         float elapsedTime = 0f;
