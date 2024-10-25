@@ -12,6 +12,10 @@ TagManager:
   - 
   - Water
   - UI
+  - Collisions
+  - Ground
+  - Player
+  - StationaryNPC
   - 
   - 
   - 
@@ -25,10 +29,6 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - Layer 1
-  - Layer 2
-  - Layer 3
   - 
   - 
   - 
