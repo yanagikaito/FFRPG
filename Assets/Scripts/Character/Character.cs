@@ -19,6 +19,8 @@ public abstract class Character : MonoBehaviour
 
     public Vector2Int Facing => Turn.Facing;
 
+    public Vector2Int CurrentCell => Map.Grid.GetCell2D(this.gameObject);
+
     protected virtual void Awake()
     {
         Move = new CharacterMover(this);
