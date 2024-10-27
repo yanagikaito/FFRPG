@@ -77,13 +77,13 @@ public class InputHandler
     // ProcessInteractメソッド：インタラクションコマンドを処理
     private void ProcessInteract()
     {
-        Vector2Int cellToCheck = playerController.Facing + Map.Grid.GetCell2D(playerController.gameObject);
+        Vector2Int cellToCheck = playerController.Facing + Game.Map.Grid.GetCell2D(playerController.gameObject);
 
         // キーが存在するか確認
-        if (Map.OccupiedCells.ContainsKey(cellToCheck))
+        if (Game.Map.OccupiedCells.ContainsKey(cellToCheck))
         {
             // セルが占有されている場合にのみ実行
-            if (Map.OccupiedCells[cellToCheck] is Interactable interactable)
+            if (Game.Map.OccupiedCells[cellToCheck] is Interactable interactable)
             {
                 interactable.Interact();
             }

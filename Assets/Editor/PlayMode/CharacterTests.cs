@@ -28,7 +28,6 @@ public class CharacterTests
         while (!isReady) yield return null;
 
         // Moving Left
-        // Arrange
         Vector2Int current = sut.CurrentCell;
 
         // Act
@@ -39,7 +38,6 @@ public class CharacterTests
         Assert.AreEqual(current + Direction.Left, sut.CurrentCell);
 
         // Moving Right
-        // Arrange
         current = sut.CurrentCell;
 
         // Act
@@ -50,7 +48,6 @@ public class CharacterTests
         Assert.AreEqual(current + Direction.Right, sut.CurrentCell);
 
         // Moving Down
-        // Arrange
         current = sut.CurrentCell;
 
         // Act
@@ -61,7 +58,6 @@ public class CharacterTests
         Assert.AreEqual(current + Direction.Down, sut.CurrentCell);
 
         // Moving Up
-        // Arrange
         current = sut.CurrentCell;
 
         // Act

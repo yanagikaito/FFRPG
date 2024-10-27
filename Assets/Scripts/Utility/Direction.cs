@@ -20,7 +20,7 @@ public static class Direction
     public static Vector2 Center2D(this Vector2Int cell)
     {
         Vector3Int threeDimensionCell = new(cell.x, cell.y, 0);
-        Vector3 cellCenterWorld = Map.Grid.GetCellCenterWorld(threeDimensionCell);
-        return Vector2Int.RoundToInt((Vector2)cellCenterWorld);
+
+        return (Vector2)Game.Map.Grid.GetCellCenterWorld(threeDimensionCell);
     }
 }
