@@ -19,7 +19,7 @@ public abstract class Character : MonoBehaviour
 
     public Vector2Int Facing => Turn.Facing;
 
-    public Vector2Int CurrentCell => Map.Grid.GetCell2D(this.gameObject);
+    public Vector2Int CurrentCell => Game.Map.Grid.GetCell2D(this.gameObject);
 
     protected virtual void Awake()
     {
@@ -30,9 +30,9 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Start()
     {
-        Vector2Int currentCell = Map.Grid.GetCell2D(this.gameObject);
-        transform.position = Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
-        Map.OccupiedCells.Add(currentCell, this);
+        Vector2Int currentCell = Game.Map.Grid.GetCell2D(this.gameObject);
+        transform.position = Game.Map.Grid.GetCellCenterWorld((Vector3Int)currentCell);
+        Game.Map.OccupiedCells.Add(currentCell, this);
     }
 
     protected virtual void Update()
