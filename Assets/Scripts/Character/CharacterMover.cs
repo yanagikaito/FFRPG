@@ -6,8 +6,6 @@ public class CharacterMover
     private readonly Character character;
     private readonly Transform transform;
     private const float TimeToMoveOneSquare = 0.375f;
-
-    // キャラクターが移動中かどうかを示すプロパティ
     public bool IsMoving { get; private set; } = false;
 
     public CharacterMover(Character character)
@@ -16,23 +14,17 @@ public class CharacterMover
         this.transform = character.transform;
     }
 
-    // 方向が基本的な方向（上、下、左、右）であり、かつキャラクターが移動中でない場合、移動コルーチンを開始
     public void TryMove(Vector2Int direction)
     {
         if (IsMoving || !direction.IsBasic()) return;
-
-        // キャラクターの向きを指定された方向に変更する
         character.Turn.Turn(direction);
         Vector2Int targetCell = character.CurrentCell + direction;
-
         if (CanMoveIntoCell(targetCell, direction))
         {
             // 移動先のセルを占有リストに追加
-            Map.OccupiedCells.Add(character.CurrentCell + direction, character);
-
+            Map.OccupiedCells.Add(targetCell, character);
             // 現在のセルを占有リストから削除
             Map.OccupiedCells.Remove(character.CurrentCell);
-
             character.StartCoroutine(CoMove(direction));
         }
     }
@@ -43,16 +35,21 @@ public class CharacterMover
         {
             return false;
         }
-        Ray2D ray = new Ray2D(character.CurrentCell.Center2D(), direction);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction);
-        Debug.DrawRay(ray.origin, ray.direction, Color.red, 2.0f);
-        foreach (RaycastHit2D hit in hits)
+
+        // レイキャストをターゲットセルの方向にのみ行う
+        Vector2 rayOrigin = GetCellCenter2D(character.gameObject);
+        Vector2 rayDirection = ((Vector2)direction).normalized; // Vector2に変換してから正規化
+        float rayDistance = Map.Grid.cellSize.x / 2f; // セルサイズの半分の距離を設定
+
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, ~LayerMask.GetMask("Player"));
+        Debug.DrawRay(rayOrigin, rayDirection * rayDistance, Color.red, 2.0f);
+
+        if (hit.collider != null && hit.collider.CompareTag("Collisions"))
         {
-            if (hit.distance < Map.Grid.cellSize.x)
-            {
-                return false;
-            }
+            Debug.Log($"Hit detected: {hit.collider.name} at distance {hit.distance}");
+            return false;
         }
+
         return true;
     }
 
@@ -61,46 +58,47 @@ public class CharacterMover
         return Map.OccupiedCells.ContainsKey(cell);
     }
 
-    // IsMovingをtrueに設定し、開始位置と終了位置を取得
-    // whileループ内でキャラクターの位置を補間し、終了位置に到達するまで移動
-    // 移動が完了したらIsMovingをfalseに設定
     private IEnumerator CoMove(Vector2Int direction)
     {
-        // 移動中フラグを立てる
+        if (!CanMoveIntoCell(character.CurrentCell + direction, direction))
+        {
+            yield break; // 衝突が検出されたら移動をキャンセル
+        }
+
         IsMoving = true;
-
-        // 現在のセルの中心を取得
         Vector2 startingPosition = GetCellCenter2D(character.gameObject);
-
-        // 移動先のセルの中心を計算
-        Vector2 endingPosition = GetCellCenter2D(character.gameObject) + direction;
-
-        // 経過時間を初期化
+        Vector2 endingPosition = startingPosition + (Vector2)direction;
         float elapsedTime = 0f;
 
-        while ((Vector2)transform.position != endingPosition)
+        while (elapsedTime < TimeToMoveOneSquare)
         {
-            // 線形補間で位置を更新
             transform.position = Vector2.Lerp(startingPosition, endingPosition, elapsedTime / TimeToMoveOneSquare);
-
-            // 経過時間を更新
             elapsedTime += Time.deltaTime;
+
+            // 移動中に衝突を再確認
+            if (!CanMoveIntoCell(character.CurrentCell + direction, direction))
+            {
+                transform.position = startingPosition; // 元の位置に戻す
+                IsMoving = false;
+                yield break;
+            }
 
             // 次のフレームまで待機
             yield return null;
         }
 
-        // 最終位置を設定
         transform.position = endingPosition;
-
-        // 移動完了フラグを設定
         IsMoving = false;
     }
 
-    // オブジェクトの現在のセルの中心を取得
+    private Vector2 GetCellCenter2D(Vector2Int cell)
+    {
+        return Map.Grid.GetCellCenter2D(cell);
+    }
+
     private Vector2 GetCellCenter2D(GameObject gameObject)
     {
         Vector2Int cellPosition = Map.Grid.GetCell2D(gameObject);
-        return Map.Grid.GetCellCenter2D(cellPosition);
+        return GetCellCenter2D(cellPosition);
     }
 }
