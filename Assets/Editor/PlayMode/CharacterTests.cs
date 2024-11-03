@@ -32,7 +32,7 @@ public class CharacterTests
 
         // Act
         sut.Move.TryMove(Direction.Left);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(.5f);
 
         // Assert
         Assert.AreEqual(current + Direction.Left, sut.CurrentCell);
@@ -42,7 +42,7 @@ public class CharacterTests
 
         // Act
         sut.Move.TryMove(Direction.Right);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(.5f);
 
         // Assert
         Assert.AreEqual(current + Direction.Right, sut.CurrentCell);
@@ -52,7 +52,7 @@ public class CharacterTests
 
         // Act
         sut.Move.TryMove(Direction.Down);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(.5f);
 
         // Assert
         Assert.AreEqual(current + Direction.Down, sut.CurrentCell);
@@ -62,9 +62,31 @@ public class CharacterTests
 
         // Act
         sut.Move.TryMove(Direction.Up);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(.5f);
 
         // Assert
         Assert.AreEqual(current + Direction.Up, sut.CurrentCell);
+    }
+
+    [UnityTest]
+    public IEnumerator Character_facing_updates_correctly()
+    {
+        while (!isReady) yield return null;
+
+        sut.Turn.Turn(Direction.Down);
+        Assert.AreEqual(Direction.Down, sut.Facing);
+        yield return new WaitForSeconds(.5f);
+
+        sut.Turn.Turn(Direction.Left);
+        Assert.AreEqual(Direction.Left, sut.Facing);
+        yield return new WaitForSeconds(.5f);
+
+        sut.Turn.Turn(Direction.Right);
+        Assert.AreEqual(Direction.Right, sut.Facing);
+        yield return new WaitForSeconds(.5f);
+
+        sut.Turn.Turn(Direction.Up);
+        Assert.AreEqual(Direction.Up, sut.Facing);
+        yield return new WaitForSeconds(.5f);
     }
 }
