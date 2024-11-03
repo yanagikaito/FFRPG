@@ -29,42 +29,26 @@ public class CharacterTests
 
         // Moving Left
         Vector2Int current = sut.CurrentCell;
-
-        // Act
         sut.Move.TryMove(Direction.Left);
         yield return new WaitForSeconds(.5f);
-
-        // Assert
         Assert.AreEqual(current + Direction.Left, sut.CurrentCell);
 
         // Moving Right
         current = sut.CurrentCell;
-
-        // Act
         sut.Move.TryMove(Direction.Right);
         yield return new WaitForSeconds(.5f);
-
-        // Assert
         Assert.AreEqual(current + Direction.Right, sut.CurrentCell);
 
         // Moving Down
         current = sut.CurrentCell;
-
-        // Act
         sut.Move.TryMove(Direction.Down);
         yield return new WaitForSeconds(.5f);
-
-        // Assert
         Assert.AreEqual(current + Direction.Down, sut.CurrentCell);
 
         // Moving Up
         current = sut.CurrentCell;
-
-        // Act
         sut.Move.TryMove(Direction.Up);
         yield return new WaitForSeconds(.5f);
-
-        // Assert
         Assert.AreEqual(current + Direction.Up, sut.CurrentCell);
     }
 
