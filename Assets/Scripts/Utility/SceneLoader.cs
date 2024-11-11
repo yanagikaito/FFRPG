@@ -7,7 +7,7 @@ using UnityEngine;
 public static class SceneLoader
 {
     // デバッグシーンのビルドインデックス
-    private static int debugSceneBuildIndex = 0;
+    //private static int debugSceneBuildIndex = 0;
 
     // バトルシーンのビルドインデックス
     private static int battleSceneBuildIndex = 1;

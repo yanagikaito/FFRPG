@@ -5,7 +5,7 @@ using UnityEngine;
 public class Battle : MonoBehaviour
 {
     [SerializeField] private List<Actor> TurnOrder = new List<Actor>();
-    [SerializeField] private int turnNumber;
+    [SerializeField] private int turnNumber = 3;
 
     private void Update()
     {
@@ -17,5 +17,16 @@ public class Battle : MonoBehaviour
             CheckForEnd();
             GoToNextTurn();
         }
+    }
+
+    private void CheckForEnd()
+    {
+
+    }
+
+    private void GoToNextTurn()
+    {
+        turnNumber = (turnNumber + 1) % TurnOrder.Count;
+        TurnOrder[turnNumber].StartTurn();
     }
 }
