@@ -1,3 +1,4 @@
+using Codice.Client.Common.GameUI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,5 +21,37 @@ public class Ally : Actor
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
+        StartCoroutine(Co_GetPlayerCommand());
+    }
+
+    private IEnumerator Co_GetPlayerCommand()
+    {
+        while (true)
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                Debug.Log("Command accepted!");
+                break;
+            }
+            yield return null;
+        }
+
+        StartCoroutine(Co_EndTurn());
+    }
+
+    private IEnumerator Co_EndTurn()
+    {
+        float elapsedTime = 0;
+        Vector2 currentPosition = transform.position;
+
+        while ((Vector2)transform.position != startingPosition)
+        {
+            transform.position = Vector2.Lerp(currentPosition, startingPosition, elapsedTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        IsTakingTurn = false;
     }
 }

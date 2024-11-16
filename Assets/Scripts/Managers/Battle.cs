@@ -5,7 +5,7 @@ using UnityEngine;
 public class Battle : MonoBehaviour
 {
     [SerializeField] private List<Actor> TurnOrder = new List<Actor>();
-    [SerializeField] private int turnNumber = 3;
+    [SerializeField] private int turnNumber = 0;
 
     private void Update()
     {
