@@ -71,6 +71,23 @@ public class CharacterTests
 
         sut.Turn.Turn(Direction.Up);
         Assert.AreEqual(Direction.Up, sut.Facing);
+    }
+
+    [UnityTest]
+    public IEnumerator Updates_cell_map_dictionary()
+    {
+        while (!isReady) yield return null;
+
+        Vector2Int originalCell = sut.CurrentCell;
+
+        Assert.IsTrue(Game.Map.OccupiedCells.ContainsKey(originalCell));
+        Assert.AreEqual(sut, Game.Map.OccupiedCells[originalCell]);
+
+        sut.Move.TryMove(Direction.Left);
         yield return new WaitForSeconds(.5f);
+
+        Assert.IsTrue(Game.Map.OccupiedCells.ContainsKey(sut.CurrentCell));
+        Assert.IsFalse(Game.Map.OccupiedCells.ContainsKey(originalCell));
+        Assert.AreEqual(sut, Game.Map.OccupiedCells[sut.CurrentCell]);
     }
 }
