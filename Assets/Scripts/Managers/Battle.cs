@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Battle : MonoBehaviour
 {
-    [SerializeField] private List<Actor> TurnOrder = new List<Actor>();
-    [SerializeField] private int turnNumber = 0;
+    private List<Actor> TurnOrder = new List<Actor>();
+    private int turnNumber = 0;
+
+    private void Start()
+    {
+        SpawnPartyMembers();
+    }
 
     private void Update()
     {
@@ -16,6 +21,17 @@ public class Battle : MonoBehaviour
         {
             CheckForEnd();
             GoToNextTurn();
+        }
+    }
+
+    private void SpawnPartyMembers()
+    {
+        Vector2 spawnPosition = new Vector2(10, 2);
+        foreach (PartyMember member in Party.ActiveMembers)
+        {
+            GameObject partyMember = Instantiate(member.ActorPrefab, spawnPosition, Quaternion.identity);
+            spawnPosition.y -= 2;
+            TurnOrder.Add(partyMember.GetComponent<Ally>());
         }
     }
 
