@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Actor : MonoBehaviour
 {
     protected Vector2 startingPosition;
-    protected Vector2 battlePosition = new Vector2(3, 0);
+    protected Vector2 battlePosition = new Vector2(0, 0);
     public bool IsTakingTurn { get; protected set; } = false;
 
     protected virtual void Start()
