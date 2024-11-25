@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Battle : MonoBehaviour
 {
+    public static EnemyPack EnemyPack;
+
     private List<Actor> TurnOrder = new List<Actor>();
     private int turnNumber = 0;
 
     private void Start()
     {
         SpawnPartyMembers();
+        SpawnEnemies();
     }
 
     private void Update()
@@ -32,6 +35,16 @@ public class Battle : MonoBehaviour
             GameObject partyMember = Instantiate(member.ActorPrefab, spawnPosition, Quaternion.identity);
             spawnPosition.y -= 2;
             TurnOrder.Add(partyMember.GetComponent<Ally>());
+        }
+    }
+
+    private void SpawnEnemies()
+    {
+        for (int i = 0; i < EnemyPack.Enemies.Count; i++)
+        {
+            Vector2 spawnPosition = new Vector2(EnemyPack.XSpawnCoordinates[i], EnemyPack.YSpawnCoordinates[i]);
+            GameObject enemy = Instantiate(EnemyPack.Enemies[i].ActorPrefab, spawnPosition, Quaternion.identity);
+            TurnOrder.Add(enemy.GetComponent<Enemy>());
         }
     }
 
