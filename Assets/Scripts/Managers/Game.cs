@@ -43,6 +43,7 @@ public class Game : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
+            Battle.EnemyPack = Resources.Load<EnemyPack>("ScriptableObjects/EnemyPacks/TestEnemyPack");
             StartBattle();
         }
 
