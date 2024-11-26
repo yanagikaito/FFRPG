@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TestEnemyPack
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 8c6b516a98eea274499524f44babc31d, type: 2}
+  - {fileID: 11400000, guid: 8c6b516a98eea274499524f44babc31d, type: 2}
   xSpawnCoordinates:
   - -5
   - -5
