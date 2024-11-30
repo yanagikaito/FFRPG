@@ -44,7 +44,7 @@ public class Game : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             Battle.EnemyPack = Resources.Load<EnemyPack>("ScriptableObjects/EnemyPacks/TestEnemyPack");
-            StartBattle();
+            StartCoroutine(Co_StartBattle());
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -53,9 +53,11 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void StartBattle()
+    private IEnumerator Co_StartBattle()
     {
         State = GameState.Battle;
+        Instantiate(Resources.Load<GameObject>("BattleTransition"), PlayerController.transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(1.5f);
         SceneLoader.LoadBattleScene();
     }
 
