@@ -51,3 +51,6 @@ TagManager:
   - name: Character
     uniqueID: 3188888629
     locked: 0
+  - name: Transitions
+    uniqueID: 490391995
+    locked: 0
