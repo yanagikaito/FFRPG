@@ -56,7 +56,8 @@ public class Game : MonoBehaviour
     private IEnumerator Co_StartBattle()
     {
         State = GameState.Battle;
-        Instantiate(Resources.Load<GameObject>("BattleTransition"), PlayerController.transform.position, Quaternion.identity);
+        Instantiate(Resources.Load<GameObject>("BattleTransition"),
+            PlayerController.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(1.5f);
         SceneLoader.LoadBattleScene();
     }
