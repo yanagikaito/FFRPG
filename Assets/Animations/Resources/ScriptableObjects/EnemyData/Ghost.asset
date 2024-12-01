@@ -10,7 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b53097e80aa5004893d181f5d7d8141, type: 3}
-  m_Name: TestEnemy
+  m_Name: Ghost
   m_EditorClassIdentifier: 
   actorPrefab: {fileID: 4658621066735410007, guid: 91a98c92bb432db4e8067139584cadc0,
     type: 3}
+  status:
+    hp: 5
+    maxHp: 5
+    str: 2
+    arm: 1
+    spd: 3

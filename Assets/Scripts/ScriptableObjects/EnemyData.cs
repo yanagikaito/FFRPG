@@ -6,6 +6,8 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     [SerializeField] private GameObject actorPrefab;
+    [SerializeField] private BattleStatus status;
 
     public GameObject ActorPrefab => actorPrefab;
+    public BattleStatus Status => status;
 }

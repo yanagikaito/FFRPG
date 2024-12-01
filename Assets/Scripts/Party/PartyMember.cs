@@ -6,8 +6,11 @@ public class PartyMember
 {
     public GameObject ActorPrefab { get; private set; }
 
-    public PartyMember(GameObject actorPrefab)
+    public BattleStatus Status { get; private set; }
+
+    public PartyMember(GameObject actorPrefab, BattleStatus status)
     {
         this.ActorPrefab = actorPrefab;
+        this.Status = status;
     }
 }
