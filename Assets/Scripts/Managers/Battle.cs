@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Battle : MonoBehaviour
@@ -7,7 +7,10 @@ public class Battle : MonoBehaviour
     public static EnemyPack EnemyPack;
 
     private readonly List<Actor> turnOrder = new List<Actor>();
-    private int turnNumber = 0;
+    private int turnNumber;
+    private bool setupComplete;
+
+    public IReadOnlyList<Actor> TurnOrder => turnOrder;
 
     private void Awake()
     {
@@ -16,16 +19,19 @@ public class Battle : MonoBehaviour
 
     private void Update()
     {
+        if (!setupComplete)
+        {
+            DetermineTurnOrderAndStartFirstTurn();
+            return;
+        }
+
         if (turnOrder.Count == 0)
         {
             Debug.LogError("Turn order is empty.");
             return;
         }
 
-        if (turnOrder[turnNumber].IsTakingTurn)
-        {
-            return;
-        }
+        if (turnOrder[turnNumber].IsTakingTurn) return;
 
         CheckForEnd();
         GoToNextTurn();
@@ -42,23 +48,10 @@ public class Battle : MonoBehaviour
         Vector2 spawnPosition = new Vector2(10, 2);
         foreach (PartyMember member in Party.ActiveMembers)
         {
-            if (member.ActorPrefab == null)
-            {
-                Debug.LogError("ActorPrefab is null for member.");
-                continue;
-            }
+            if (!ValidateActorPrefab(member.ActorPrefab, "party member")) continue;
 
             GameObject partyMember = Instantiate(member.ActorPrefab, spawnPosition, Quaternion.identity);
-            spawnPosition.y -= 2;
-            Ally ally = partyMember.GetComponent<Ally>();
-            if (ally != null)
-            {
-                turnOrder.Add(ally);
-            }
-            else
-            {
-                Debug.LogError("Ally component is missing on party member.");
-            }
+            if (AddToTurnOrder<Ally>(partyMember, member.Status)) spawnPosition.y -= 2;
         }
     }
 
@@ -67,10 +60,21 @@ public class Battle : MonoBehaviour
         for (int i = 0; i < EnemyPack.Enemies.Count; i++)
         {
             Vector2 spawnPosition = new Vector2(EnemyPack.XSpawnCoordinates[i], EnemyPack.YSpawnCoordinates[i]);
+            if (!ValidateActorPrefab(EnemyPack.Enemies[i].ActorPrefab, "enemy")) continue;
 
-            GameObject enemy = Instantiate(EnemyPack.Enemies[i].ActorPrefab, spawnPosition, Quaternion.identity);
-            Enemy enemyComponent = enemy.GetComponent<Enemy>();
+            GameObject enemyActor = Instantiate(EnemyPack.Enemies[i].ActorPrefab, spawnPosition, Quaternion.identity);
+            AddToTurnOrder<Enemy>(enemyActor, EnemyPack.Enemies[i].Status);
         }
+    }
+
+    private void DetermineTurnOrderAndStartFirstTurn()
+    {
+        turnOrder.Sort((a, b) => b.Status.Initiative.CompareTo(a.Status.Initiative));
+        if (turnOrder.Count > 0)
+        {
+            turnOrder[0].StartTurn();
+        }
+        setupComplete = true;
     }
 
     private void CheckForEnd()
@@ -90,5 +94,28 @@ public class Battle : MonoBehaviour
         {
             Debug.LogError("Next actor in turn order is null.");
         }
+    }
+
+    private bool ValidateActorPrefab(GameObject prefab, string actorType)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError($"ActorPrefab is null for {actorType}.");
+            return false;
+        }
+        return true;
+    }
+
+    private bool AddToTurnOrder<T>(GameObject actorObject, BattleStatus status) where T : Actor
+    {
+        T actor = actorObject.GetComponent<T>();
+        if (actor == null)
+        {
+            Debug.LogError($"{typeof(T).Name} component is missing on actor: {actorObject.name}");
+            return false;
+        }
+        actor.Status = status;
+        turnOrder.Add(actor);
+        return true;
     }
 }
