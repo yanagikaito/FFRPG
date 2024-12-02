@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Actor
@@ -7,50 +6,42 @@ public class Enemy : Actor
     public override void StartTurn()
     {
         IsTakingTurn = true;
-        StartCoroutine(Co_MoveToCenter());
+        StartCoroutine(MoveToCenter());
     }
 
-    private IEnumerator Co_MoveToCenter()
+    private IEnumerator MoveToCenter()
     {
-        float elapsedTime = 0;
+        yield return MoveToPosition(battlePosition);
+        StartCoroutine(ChooseAction());
+    }
 
-        while ((Vector2)transform.position != battlePosition)
+    private IEnumerator ChooseAction()
+    {
+        while (!Input.GetKeyDown(KeyCode.C))
         {
-            transform.position = Vector2.Lerp(startingPosition, battlePosition, elapsedTime);
-            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        StartCoroutine(Co_Enemy_ChooseAction());
+        Debug.Log("Command accepted!");
+        StartCoroutine(EndTurn());
     }
 
-    private IEnumerator Co_Enemy_ChooseAction()
+    private IEnumerator EndTurn()
     {
-        while (true)
-        {
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                Debug.Log("Command accepted!");
-                break;
-            }
-            yield return null;
-        }
-
-        StartCoroutine(Co_EndTurn());
-    }
-
-    private IEnumerator Co_EndTurn()
-    {
-        float elapsedTime = 0;
-        Vector2 currentPosition = transform.position;
-
-        while ((Vector2)transform.position != startingPosition)
-        {
-            transform.position = Vector2.Lerp(currentPosition, startingPosition, elapsedTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
+        yield return MoveToPosition(startingPosition);
         IsTakingTurn = false;
+    }
+
+    private IEnumerator MoveToPosition(Vector2 targetPosition)
+    {
+        float elapsedTime = 0;
+        Vector2 startPosition = transform.position;
+
+        while ((Vector2)transform.position != targetPosition)
+        {
+            transform.position = Vector2.Lerp(startPosition, targetPosition, elapsedTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
     }
 }
