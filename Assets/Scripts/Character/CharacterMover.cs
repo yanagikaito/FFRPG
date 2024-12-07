@@ -5,7 +5,7 @@ public class CharacterMover
 {
     private readonly Character character;
     private readonly Transform transform;
-    private const float TimeToMoveOneSquare = 0.375f;
+    private const float TimeToMoveOneSquare = .25f;
 
     // Character‚ÌŒ»Ý‚ÌˆÊ’u‚ðŠî‚É2ŽŸŒ³ƒZƒ‹‚ÌÀ•W‚ðŽæ“¾
     private Vector2Int CurrentCell => Game.Map.Grid.GetCell2D(character.gameObject);
