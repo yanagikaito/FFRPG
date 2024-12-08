@@ -15,6 +15,7 @@ public class InputHandler
         MoveUp,
         MoveDown,
         Interact,
+        OpenMenu,
     }
 
     // コンストラクタ：PlayerControllerオブジェクトを初期化
@@ -26,6 +27,9 @@ public class InputHandler
     // CheckInputメソッド：プレイヤーの入力をチェックし、対応するコマンドを設定
     public void CheckInput()
     {
+        if (Game.State != GameState.World)
+            return;
+
         command = Command.None;
 
         if (Input.GetKey(KeyCode.A)) command = Command.MoveLeft;
@@ -33,34 +37,33 @@ public class InputHandler
         else if (Input.GetKey(KeyCode.W)) command = Command.MoveUp;
         else if (Input.GetKey(KeyCode.S)) command = Command.MoveDown;
         else if (Input.GetKeyDown(KeyCode.Space)) command = Command.Interact;
+        else if (Input.GetKeyDown(KeyCode.Escape)) command = Command.OpenMenu;
 
-        if (command != Command.None) HandleCommand(command);
+        if (command != Command.None) HandleCommand();
     }
 
     // HandleCommandメソッド：受け取ったコマンドを処理
-    private void HandleCommand(Command command)
+    private void HandleCommand()
     {
-        if (IsMovementCommand(command))
+        switch (command)
         {
-            ProcessMovement(command);
+            case Command.MoveLeft:
+            case Command.MoveRight:
+            case Command.MoveUp:
+            case Command.MoveDown:
+                ProcessMovement();
+                break;
+            case Command.Interact:
+                ProcessInteract();
+                break;
+            case Command.OpenMenu:
+                ProcessOpenMenu();
+                break;
         }
-        else if (command == Command.Interact)
-        {
-            ProcessInteract();
-        }
-    }
-
-    // IsMovementCommandメソッド：コマンドが移動コマンドかどうかを判定
-    private bool IsMovementCommand(Command command)
-    {
-        return command == Command.MoveLeft ||
-               command == Command.MoveRight ||
-               command == Command.MoveUp ||
-               command == Command.MoveDown;
     }
 
     // ProcessMovementメソッド：移動コマンドを処理し、キャラクターを移動
-    private void ProcessMovement(Command command)
+    private void ProcessMovement()
     {
         Vector2Int direction = command switch
         {
@@ -80,13 +83,15 @@ public class InputHandler
         Vector2Int cellToCheck = playerController.Facing + Game.Map.Grid.GetCell2D(playerController.gameObject);
 
         // キーが存在するか確認
-        if (Game.Map.OccupiedCells.ContainsKey(cellToCheck))
+        if (Game.Map.OccupiedCells.TryGetValue(cellToCheck, out var interactable) && interactable is Interactable)
         {
-            // セルが占有されている場合にのみ実行
-            if (Game.Map.OccupiedCells[cellToCheck] is Interactable interactable)
-            {
-                interactable.Interact();
-            }
+            ((Interactable)interactable).Interact();
         }
+    }
+
+    // ProcessOpenMenuメソッド：メニューオープンコマンドを処理
+    private void ProcessOpenMenu()
+    {
+        Game.OpenMenu();
     }
 }

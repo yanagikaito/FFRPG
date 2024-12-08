@@ -19,6 +19,10 @@ public class Game : MonoBehaviour
 
     public static PlayerController PlayerController { get; private set; }
 
+    public static void OpenMenu() => State = GameState.Menu;
+
+    public static void CloseMenu() => State = GameState.World;
+
     [SerializeField] private Map startingMap;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Vector2Int startingCell;
