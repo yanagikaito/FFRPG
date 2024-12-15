@@ -14,16 +14,14 @@ public static class Party
 
     private static void AddInitialMembers()
     {
-        AddMemberToActive("PartyBattlerPrefabs/PartyMember1", new BattleStatus(10, 10, 3, 2, 3));
-        AddMemberToActive("PartyBattlerPrefabs/PartyMember1", new BattleStatus(10, 10, 3, 2, 3));
-        AddMemberToActive("PartyBattlerPrefabs/PartyMember1", new BattleStatus(10, 10, 3, 2, 3));
+        AddMemberToActive("PartyBattlerPrefabs/PartyMember1", new BattleStatus(1, 10, 10, 3, 2, 3));
     }
 
     private static void AddMemberToActive(string resourcePath, BattleStatus status)
     {
-        GameObject prefab = Resources.Load<GameObject>(resourcePath);
-        PartyMember member = new PartyMember(prefab, status);
-        activeMembers.Add(member);
+        GameObject blueStatus = Resources.Load<GameObject>(resourcePath);
+        PartyMember blue = new PartyMember("Blue", null, "Fighter", blueStatus, status);
+        activeMembers.Add(blue);
     }
 
     public static void AddActiveMember(PartyMember memberToAdd)
