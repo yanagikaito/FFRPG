@@ -8,7 +8,7 @@ public class PartyMemberInfo : MonoBehaviour
 {
     private PartyMember partyMember;
 
-    [SerializeField] private Image partyMemberImagePortrait;
+    [SerializeField] private Image memberPortrait;
     [SerializeField] private TextMeshProUGUI memberName;
     [SerializeField] private TextMeshProUGUI memberLevelJob;
     [SerializeField] private TextMeshProUGUI memberHP;
@@ -24,7 +24,7 @@ public class PartyMemberInfo : MonoBehaviour
     {
         partyMember = Party.ActiveMembers[0];
         memberName.text = partyMember.Name;
-        partyMemberImagePortrait = partyMember.Portrait;
+        memberPortrait.sprite = partyMember.Portrait;
         GetStats();
     }
 
@@ -35,11 +35,11 @@ public class PartyMemberInfo : MonoBehaviour
 
         memberHP.text = $"HP {partyMember.Status.HP}";
         memberSpecial.text = "MP 0:0";
-        memberBaseSTR.text = partyMember.Status.STR.ToString();
-        memberBaseARM.text = partyMember.Status.ARM.ToString();
-        memberBaseSPD.text = partyMember.Status.SPD.ToString();
-        memberEquipSTR.text = partyMember.Status.STR.ToString();
-        memberEquipARM.text = partyMember.Status.ARM.ToString();
-        memberEquipSPD.text = partyMember.Status.SPD.ToString();
+        memberBaseSTR.text = $"STR: {partyMember.Status.STR}";
+        memberBaseARM.text = $"ARM: {partyMember.Status.ARM}";
+        memberBaseSPD.text = $"SPD: {partyMember.Status.SPD}";
+        memberEquipSTR.text = $"STR: {partyMember.Status.STR}";
+        memberEquipARM.text = $"ARM: {partyMember.Status.ARM}";
+        memberEquipSPD.text = $"SPD: {partyMember.Status.SPD}";
     }
 }
