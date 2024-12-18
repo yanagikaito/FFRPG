@@ -1,25 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PartyMember
+[CreateAssetMenu(fileName = "New Party Member", menuName = "New Party Member")]
+public class PartyMember : ScriptableObject
 {
-    public string Name { get; private set; }
-    public GameObject ActorPrefab { get; private set; }
+    [SerializeField] private string moniker;
+    [SerializeField] private GameObject actorPrefab;
+    [SerializeField] private BattleStatus status;
+    [SerializeField] private Sprite portrait;
+    [SerializeField] private string job = "Some job";
 
-    public BattleStatus Status { get; private set; }
-
-    public Image Portrait { get; private set; }
-
-    public string Job { get; private set; } = "Some job";
-
-    public PartyMember(string name, Image portrait, string job, GameObject actorPrefab, BattleStatus status)
-    {
-        this.Name = name;
-        this.Portrait = portrait;
-        this.Job = job;
-        this.ActorPrefab = actorPrefab;
-        this.Status = status;
-    }
+    public string Name => moniker;
+    public GameObject ActorPrefab => actorPrefab;
+    public BattleStatus Status => status;
+    public Sprite Portrait => portrait;
+    public string Job => job;
 }

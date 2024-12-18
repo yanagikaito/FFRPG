@@ -9,19 +9,15 @@ public static class Party
 
     static Party()
     {
-        AddInitialMembers();
-    }
+        PartyMember Blue = ResourceLoader.Load<PartyMember>(ResourceLoader.Blue);
+        PartyMember Black = ResourceLoader.Load<PartyMember>(ResourceLoader.Black);
+        PartyMember Red = ResourceLoader.Load<PartyMember>(ResourceLoader.Red);
+        PartyMember White = ResourceLoader.Load<PartyMember>(ResourceLoader.White);
 
-    private static void AddInitialMembers()
-    {
-        AddMemberToActive("PartyBattlerPrefabs/PartyMember1", new BattleStatus(1, 10, 10, 3, 2, 3));
-    }
-
-    private static void AddMemberToActive(string resourcePath, BattleStatus status)
-    {
-        GameObject blueStatus = Resources.Load<GameObject>(resourcePath);
-        PartyMember blue = new PartyMember("Blue", null, "Fighter", blueStatus, status);
-        activeMembers.Add(blue);
+        AddActiveMember(Blue);
+        AddActiveMember(Black);
+        AddActiveMember(Red);
+        AddActiveMember(White);
     }
 
     public static void AddActiveMember(PartyMember memberToAdd)
