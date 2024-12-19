@@ -5,29 +5,29 @@ using UnityEngine;
 
 public static class ResourceLoader
 {
-    public static string enemyDataPath = "ScriptableObjects/EnemyData";
-    public static string enemyPath = "ScriptableObjects/EnemyPacks";
-    public static string partyMemberPath = "ScriptableObjects/PartyMembers";
+    private const string EnemyDataPath = "ScriptableObjects/EnemyData/";
+    private const string EnemyPath = "ScriptableObjects/EnemyPacks/";
+    private const string PartyMemberPath = "ScriptableObjects/PartyMembers/";
+    private const string BattleTransitionPath = "BattleTransition";
 
-    // enemy data
-    public static string Ghost = enemyDataPath + "Ghost";
+    // Enemy data
+    public static string Ghost => CombinePath(EnemyDataPath, "Ghost");
 
-    // enemy packs
-    public static string TwoGhost = enemyDataPath + "TwoGhost";
+    // Enemy packs
+    public static string TwoGhost => CombinePath(EnemyPath, "TwoGhost");
 
-    // party members
-    public static string Blue = partyMemberPath + "Blue";
-    public static string Black = partyMemberPath + "Black";
-    public static string Red = partyMemberPath + "Red";
-    public static string White = partyMemberPath + "White";
+    // Party members
+    public static string Blue => CombinePath(PartyMemberPath, "Blue");
+    public static string Black => CombinePath(PartyMemberPath, "Black");
+    public static string Red => CombinePath(PartyMemberPath, "Red");
+    public static string White => CombinePath(PartyMemberPath, "White");
 
-    // other
-    public static string BattleTransition = "BattleTransition";
+    // Other
+    public static string BattleTransition => BattleTransitionPath;
 
     public static T Load<T>(string resource) where T : Object
     {
         T loadedItem = Resources.Load<T>(resource);
-
         if (loadedItem != null)
         {
             return loadedItem;
@@ -37,5 +37,10 @@ public static class ResourceLoader
             Debug.LogError($"Could not locate {resource}");
             return null;
         }
+    }
+
+    private static string CombinePath(string basePath, string fileName)
+    {
+        return $"{basePath}{fileName}";
     }
 }
